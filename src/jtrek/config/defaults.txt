@@ -1,0 +1,178 @@
+name:					guest
+password:               
+autologin:				false
+useRsa:					true
+
+server:					pickled.netrek.org
+port:					2592
+
+metaserver:				metaserver.netrek.org
+metaport:				3521
+metaStatusLevel:		3
+
+keepPeace:				true
+
+reportKills:			true
+reportKillsInReview:	true
+reportAllInReview:		true
+reportTeamInReview:		true
+reportIndInReview:		true
+reportPhaserInReview:	true
+scrollSaveLines:		-1
+phaserMsg:				2
+
+warnShields:			false
+varyShields:			false
+varyHull:				false
+
+useLite:				true
+defLite:				true
+playerCycleTime:		10
+planetCycleTime:		10
+
+
+tryUdp:					true
+udpSequenceCheck:		true
+udpClientSend:			1
+udpClientReceive:		1
+tryShort:				true
+dontPing:				false
+updatesPerSecond:		5
+
+enableFastQuit:			false
+
+showPlanetNames:		2
+showLocal:				1
+showGalactic:			1
+
+newInfo:				true
+keepInfo:				0
+playerList:				nTRNKWLr O D d 
+
+showLock:				3
+cloakChars:				??
+fillTriangle:			false
+showTractorPressor:		true
+continuousTractor:		true
+
+sound:					true
+
+keymap:
+ckeymap:
+buttonmap:				1t2p3k
+
+continuousMouse:		true
+
+dashboardClass:			jtrek.visual.KRPDashboard
+playerListClass:		jtrek.visual.SortedPlayerList
+soundEngineClass:
+
+netrek.geometry:		0,0,1008,742
+
+local.geometry:			-4,-4,508,508
+local.parent:			netrek
+local.visible:			true
+
+map.geometry:			500,-4,508,508
+map.parent:				netrek
+map.visible:			true
+
+tstat.geometry:			-4,500,508,51
+tstat.parent:			netrek
+tstat.visible:			true
+
+warn.geometry:			500,500,508,27
+warn.parent:			netrek
+warn.visible:			true
+
+message.geometry:		500,520,508,27
+message.parent:			netrek
+message.visible:		true
+
+planet.geometry:		670,10,326,423
+planet.parent:			root
+planet.visible:			false
+
+player.geometry:		500,538,508,205
+player.parent:			netrek
+player.visible:			true
+
+entry.geometry:			0,0,508,508
+entry.parent:			local
+entry.visible:			false
+
+login.geometry:			0,0,508,508
+login.parent:			local
+login.visible:			false
+
+info.geometry:			0,0,508,508
+info.parent:			map
+info.visible:			false
+
+review.geometry:		-4,543,508,200
+review.parent:			netrek
+review.visible:			true
+
+review_all.geometry:	0,500,508,98
+review_all.parent:		root
+review_all.visible:		false
+
+review_team.geometry:	20,520,508,98
+review_team.parent:		root
+review_team.visible:	false
+
+review_your.geometry:	40,540,508,98
+review_your.parent:		root
+review_your.visible:	false
+
+review_kill.geometry:	60,560,508,98
+review_kill.parent:		root
+review_kill.visible:	false
+
+review_phaser.geometry:	80,580,508,98
+review_phaser.parent:	root
+review_phaser.visible:	false
+
+stats.geometry:			392,0,215,106
+stats.parent:			root
+stats.visible:			false
+
+war.geometry:			750,10,133,127
+war.parent:				netrek
+war.visible:			false
+
+UDP.geometry:			500,0,250,187
+UDP.parent:				root
+UDP.visible:			false
+
+network.geometry:		500,0,258,67
+network.parent:			root
+network.visible:		false
+
+option.geometry:		510,10,232,225
+option.parent:			netrek
+option.visible:			false
+
+sound.geometry:			300,10,175,366
+sound.parent:			root
+sound.visible:			false
+
+help.geometry:			20,50,728,270
+help.parent:			none
+help.visible:			false
+
+macrow.geometry:		20,50,612,580
+macrow.parent:			none
+macrow.visible:			false
+
+rank.geometry:			40,40,283,113
+rank.parent:			netrek
+rank.visible:			false
+
+pingStats.geometry:		500,0,298,108
+pingStats.parent:		root
+pingStats.visible:		false
+
+motd.geometry:			20,20,508,508
+motd.parent:			none
+motd.visible:			false
