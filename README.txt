@@ -1,8 +1,12 @@
- README for version 1.0.0 by Darrell Root
+ README for version 0.9.6 Beta by Darrell Root
  
  I've taken Robert Temple's old JTrek code from 1998 and am attempting to update
  it to run on recent versions of Java.  Most of the code is cut-and-pasted from
- Robert's source code.  Long live Netrek!  - Darrell      feedback@networkmom.net
+ Robert's source code. 
+
+ 0.9.6 update: multi-button mouse works!  But we have high cpu utilization and need profiling.
+
+ Long live Netrek!  - Darrell      feedback@networkmom.net
  
  
  

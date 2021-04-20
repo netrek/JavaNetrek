@@ -12,8 +12,9 @@ public class MouseInputHandler extends MouseAdapter {
 	}
 
 	/** mousePressed */
-	public void mousePressed(MouseEvent e) {		
-		char key = 1;
+	public void mousePressed(MouseEvent e) {
+		//char key = 1;
+		char key = (char) e.getButton(); // BUTTON1 == 1, BUTTON2 == 2, BUTTON3 == 3
 		if(e.isAltDown()) {
 			key = 2;
 		}
