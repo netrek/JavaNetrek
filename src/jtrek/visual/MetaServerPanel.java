@@ -49,6 +49,9 @@ public class MetaServerPanel extends MenuPanel implements ActionListener, Window
 				case 'H':
 					s = "Hockey";
 					break;
+				case 'E':
+					s = "Empire";
+					break;
 				case 'F':
 					s = "Dogfight";
 					break;

@@ -26,7 +26,7 @@ public class Main extends Thread implements Copyright {
 		int ghost_slot = 0;
 		int base_udp_local_port = 0;
 		int socket_number = 0;
-		boolean check_metaserver = false;
+		boolean check_metaserver = true; // setting metaserver to be enabled by default
 
 		for(int a = 0; a < args.length; ++a) {
 			if(args[a].length() != 2 || args[a].charAt(0) != '-') {
@@ -41,6 +41,7 @@ public class Main extends Thread implements Copyright {
 			case 'h':
 				try {
 					server = args[++a];
+					check_metaserver = false; // if we set a server, we dont check metaserver
 				}
 				catch(ArrayIndexOutOfBoundsException e) {
 					System.out.println("specify a host after '-h'");
