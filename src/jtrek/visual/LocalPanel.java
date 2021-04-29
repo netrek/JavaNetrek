@@ -154,7 +154,7 @@ public class LocalPanel extends BaseMapPanel {
 			dy = planet.y / SCALE - 15;
 			
 			// do we have info on the planet?
-			Image planet_image = null;
+			/*Image planet_image = null;
 			if ((planet.info & me.team.bit) == 0) {
 				planet_image = bitmaps.noinfo;
 			}
@@ -166,9 +166,10 @@ public class LocalPanel extends BaseMapPanel {
 			}
 
 			source_y = 30 * (++planet.orbit % bitmaps.planet_frames);
+			*/
 
-			// draw the planet, transparent pixels are drawn in the planet's color.
-			og.drawImage(planet_image, dx, dy, dx + 30, dy + 30, 0, source_y, 30, source_y + 30, null);
+			//no longer cycling fancy planet graphics - Darrell 0.9.7
+			//og.drawImage(planet_image, dx, dy, dx + 30, dy + 30, 0, source_y, 30, source_y + 30, null);
 
 			if ((planet.info & me.team.bit) != 0) {
 				switch(Defaults.show_local) {
@@ -193,6 +194,9 @@ public class LocalPanel extends BaseMapPanel {
 			else {
 				og.setColor(Team.TEAMS[Team.NOBODY].getColor());
 			}
+			
+			// Now just drawing circle for the planet - Darrell 0.9.7
+			og.drawOval(dx, dy, 30, 30);
 
 			
 			// draw the name of the planet
