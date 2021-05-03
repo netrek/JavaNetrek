@@ -7,7 +7,7 @@ import jtrek.comm.*;
 import jtrek.config.*;
 
 public class GalacticPanel extends BaseMapPanel {
-	final static float SCALE = (float)500 / (float)Universe.PIXEL_SIZE;
+	static float SCALE = (float)500 / (float)Universe.PIXEL_SIZE;
 
 	GalacticBitmaps bitmaps;
 
@@ -30,17 +30,31 @@ public class GalacticPanel extends BaseMapPanel {
 
 	/** getCourse */
 	byte getCourse() {	
+		int xclick = mx * Universe.PIXEL_SIZE / this.getWidth();
+		int yclick = my * Universe.PIXEL_SIZE / this.getHeight();
 		return (byte)Math.rint(
-			Math.atan2((double)mx - data.me.x * 0.005d, data.me.y * 0.005d - (double)my) / Math.PI * 128);
+			Math.atan2(xclick - data.me.x, data.me.y - yclick) / Math.PI * 128);
 	}
 
 	/** getTarget */
 	Object getTarget(int target_type) {
-		return data.getTarget((mx * Universe.PIXEL_SIZE) / 500, (my * Universe.PIXEL_SIZE) / 500, target_type);
+		return data.getTarget((mx * Universe.PIXEL_SIZE) / this.getWidth(), (my * Universe.PIXEL_SIZE) / this.getHeight(), target_type);
 	}
 
+	/**
+	 * Added support to rescale galactic window based on resizing
+	 */
+	private void updateScale() {
+		if (this.getWidth() < 100) { // abort recalculation if window too small
+			return;
+		}
+		GalacticPanel.SCALE = (float)this.getWidth() /  (float)Universe.PIXEL_SIZE;
+	}
 	/** update */
 	public void update(Graphics g) {
+		this.updateScale();
+		redraw_all_planets = true;
+		
 		Graphics og = offscreen.getGraphics();
 		og.setFont(getFont());
 		Graphics pg = planet_offscreen.getGraphics();

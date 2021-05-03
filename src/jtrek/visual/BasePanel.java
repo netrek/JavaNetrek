@@ -63,8 +63,8 @@ public abstract class BasePanel extends java.awt.Panel implements WindowListener
 		else {
 			super.setBounds(x, y, width, height);
 		}
-		view_size.width = width - TWO_BORDERS;
-		view_size.height = height - TWO_BORDERS;
+		view_size.width = width;// - TWO_BORDERS;
+		view_size.height = height;// - TWO_BORDERS;
 		setup();
 	}
 

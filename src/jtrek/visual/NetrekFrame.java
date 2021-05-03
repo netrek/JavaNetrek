@@ -22,7 +22,7 @@ public class NetrekFrame extends Frame {
 	public InfoPanel server_info;
 	public LocalPanel local;
 	public GalacticPanel galactic;
-	public Dashboard dashboard;
+	public Dashboard dashboard;  // also known as tstat i think
 	public WarningPanel warning;
 	public MessagePanel message;
 	public PlayerListPanel player_list;	
@@ -56,6 +56,7 @@ public class NetrekFrame extends Frame {
 	public FeatureList feature_list;
 	public Beeplite beeplite;
 	public boolean quit = false;
+	private NetrekFrame netrekFrame;
 
 	public NetrekFrame(Communications comm, Universe data) {
 		super("Netrek");
@@ -64,6 +65,8 @@ public class NetrekFrame extends Frame {
 		setLayout(null);
 		setBackground(Color.black);
 		setIconImage(ICON_IMAGE);
+		
+		netrekFrame = this;
 		
 		// install the message handlers
 		dmessage = new IncomingMessageHandler(this, data, comm);
@@ -216,6 +219,80 @@ public class NetrekFrame extends Frame {
 		detached_motd.addKeyListener(key_handler);
 		detached_motd.detachWindow(null).addKeyListener(key_handler);
 		setupBasePanel(detached_motd);
+		
+        this.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                // This is only called when the user releases the mouse button.
+                System.out.println("componentResized");
+                netrekFrame.resizeWindows();
+            }
+        });
+
+	}
+	
+	void resizeWindows() {
+		int windowWidth = this.getWidth();
+		int windowHeight = this.getHeight();
+		
+		int leftYPosition = 0;
+		int rightYPosition = 0;
+		int halfWidth = windowWidth / 2;
+		
+		int mapDimension = Math.min(halfWidth, windowHeight * 742 / 1008); //keep maps square
+		
+		// overlapping front windows
+		
+		entry.setBounds(0, 0, mapDimension, mapDimension);
+		if (login != null) {
+			login.setBounds(0, 0, mapDimension, mapDimension);
+		}
+		information.setBounds(0, 0, mapDimension, mapDimension);
+		attached_motd.setBounds(halfWidth, 0, mapDimension, mapDimension);
+		options.setBounds(halfWidth, 0, mapDimension, mapDimension);
+		
+		// left column
+		
+		local.setBounds(0,0,mapDimension, mapDimension); 
+		leftYPosition += mapDimension;
+
+		dashboard.setBounds(0, leftYPosition, halfWidth, 51);;
+		leftYPosition += 51;
+		
+		// reviews seem to overlap
+		review.setBounds(0,leftYPosition, halfWidth, windowHeight / 4);
+		leftYPosition += windowHeight / 4;
+		
+		review_all.setBounds(0,leftYPosition, halfWidth, windowHeight / 8);
+		leftYPosition += windowHeight / 8;
+		
+		review_team.setBounds(0,leftYPosition, halfWidth, windowHeight / 8);
+		leftYPosition += windowHeight / 8;
+		
+		review_your.setBounds(0, leftYPosition, halfWidth, windowHeight / 8);
+		leftYPosition += windowHeight / 8;
+		
+		review_kill.setBounds(0, leftYPosition, halfWidth, windowHeight / 8);
+		leftYPosition += windowHeight / 8;
+		
+		review_phaser.setBounds(0, leftYPosition, halfWidth, windowHeight / 8);
+		leftYPosition += windowHeight / 8;
+
+		// right column
+		
+		galactic.setBounds(halfWidth, 0, mapDimension, mapDimension);
+		rightYPosition += mapDimension;
+		
+		warning.setBounds(halfWidth, rightYPosition, halfWidth, windowHeight / 28);
+		rightYPosition += windowHeight / 28;
+		
+		message.setBounds(halfWidth, rightYPosition, windowWidth/2, windowHeight / 28);
+		rightYPosition += windowHeight / 28;
+		
+		player_list.setBounds(halfWidth, rightYPosition, windowWidth / 2, windowHeight /4);
+		rightYPosition += windowHeight / 4;
+		
+		
+		
 	}
 	
 	void shutDown() {
@@ -268,6 +345,7 @@ public class NetrekFrame extends Frame {
 		// z-order of dialogs don't stay over this frame correctly
 		addNotify();
 		addWindows();
+		//newWindowSetup();
 		Insets insets = getInsets();
 		Rectangle rect = Defaults.getWindowGeometry("netrek");
 		rect.width += insets.left + insets.right;
@@ -277,6 +355,43 @@ public class NetrekFrame extends Frame {
 		setupWindows();
 		requestFocus();
 	}
+	
+	/*public void newWindowSetup() {
+		
+		this.setBounds(0,0,1008,742);
+		
+		add(information);
+		
+		BasePanel login = (BasePanel) getWindow("login");
+		login.setVisible(false);
+		Container netrekWindow = getWindow("netrek");
+		GridBagConstraints constraints = new GridBagConstraints();
+		
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.anchor = GridBagConstraints.NORTHWEST;
+		netrekWindow.add(login,constraints);
+		
+		BasePanel local = (BasePanel) getWindow("local");
+		local.setMinimumSize(new Dimension(508,508));
+		local.setBounds(0, 0, 500, 500);
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.anchor = GridBagConstraints.NORTHWEST;
+		netrekWindow.add(local,constraints);
+		local.setVisible(true);
+
+
+		BasePanel entry = (BasePanel) getWindow("entry");
+		entry.setVisible(false);
+		
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.anchor = GridBagConstraints.NORTHWEST;
+		netrekWindow.add(entry,constraints);
+
+	}
+*/
 	
 	public void showLogin() {
 		local.setVisible(true);
@@ -312,7 +427,14 @@ public class NetrekFrame extends Frame {
 				parent = this;
 			}
 			try {
-				parent.add(panel);
+				//GridBagConstraints constraints = getConstraints(panel);
+				setSize(panel);
+				//if (constraints != null) {
+				//	parent.add(panel,constraints);
+				//} else {
+					parent.add(panel);
+				//}
+				panel.setVisible(Defaults.getWindowVisible(panel.name));
 			}
 			catch(IllegalArgumentException e) {
 				System.err.println("Error adding window \"" + panel.getName() + "\" to parent, " + e.getMessage());
@@ -328,6 +450,7 @@ public class NetrekFrame extends Frame {
 			setupBasePanel(windows[w]);
 		}
 	}
+	
 
 	/** setupBasePanel */
 	void setupBasePanel(BasePanel panel) {
@@ -341,6 +464,67 @@ public class NetrekFrame extends Frame {
 		}
 		panel.setVisible(Defaults.getWindowVisible(panel.name));
 	}	
+
+	/*private GridBagConstraints getConstraints(BasePanel panel) {
+		GridBagConstraints constraints = new GridBagConstraints();
+		if (panel.name.equals("local")) {
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			constraints.anchor = GridBagConstraints.NORTHWEST;
+			return constraints;
+		} else if (panel.name.equals("map")) {
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			constraints.anchor = GridBagConstraints.NORTHEAST;
+			return constraints;
+		} else {
+			return null;
+		}
+	}*/
+	
+	void setSize(BasePanel panel) {
+		if(panel.getParent() != null) {
+			Rectangle geometry = Defaults.getWindowGeometry(panel.name);
+			if (geometry.x < 0) {
+				geometry.x = 0;
+			}
+			if (geometry.y < 0) {
+				geometry.y = 0;
+			}
+			panel.setBounds(geometry);
+		}
+	}
+	/**
+	 * New attempt to setup windows for netrek 0.9.7 to allow resizing
+	 * @param panel
+	 */
+	/*void setupBasePanel2(BasePanel panel) {
+		GridBagConstraints constraints = new GridBagConstraints();
+
+		if (panel.name.equals("local")) {
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			constraints.anchor = GridBagConstraints.NORTHWEST;
+			panel.setSize(508, 508);
+			panel.setVisible(true);
+		} else if (panel.name.equals("map")) {
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			constraints.anchor = GridBagConstraints.NORTHEAST;
+			panel.setSize(508, 508);
+			panel.setVisible(true);
+		} else {
+			if(panel.getParent() != null) {
+				Rectangle geometry = Defaults.getWindowGeometry(panel.name);
+				if(panel.getParent() == this) {
+					Insets i = getInsets();
+					geometry.translate(i.left, i.top);
+				}
+				panel.setBounds(geometry);
+			}
+			panel.setVisible(Defaults.getWindowVisible(panel.name));
+		}
+	}*/
 
 	/** loginComplete */
 	public void loginComplete() {
