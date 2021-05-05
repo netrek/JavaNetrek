@@ -68,7 +68,7 @@ continuousMouse:		true
 
 dashboardClass:			jtrek.visual.KRPDashboard
 playerListClass:		jtrek.visual.SortedPlayerList
-soundEngineClass:
+soundEngineClass:		jtrek.visual.SoundEngineActual
 
 netrek.geometry:		0,0,1008,742
 
