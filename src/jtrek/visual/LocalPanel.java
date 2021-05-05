@@ -11,8 +11,9 @@ public class LocalPanel extends BaseMapPanel {
 	final static Color PRESSOR_COLOR = new Color(0x888800);
 	final static int ALERT_FILTER = (Player.GREEN | Player.YELLOW | Player.RED);
 
-	final static int SCALE = 40;
-	final static int VIEW = SCALE * 250;
+	final static int TARGET_VIEW_WIDTH = 20000;
+	static int SCALE = 40;
+	static int VIEW = SCALE * 250;
 
 	LocalBitmaps bitmaps;
 	int alert = 0;
@@ -59,6 +60,22 @@ public class LocalPanel extends BaseMapPanel {
 		}
 	}
 	
+	/**
+	 * Recalculates scale.  Tactical screen should cover 20,000 netrek units
+	 * and (by default) is 500 pixels wide
+	 * That's 20% across the universe.
+	 */
+	private void recalculateScale() {
+		int viewWidth = this.getWidth();
+		if (viewWidth < 100) {
+			// giving up, view too small
+			return;
+		}
+		LocalPanel.VIEW = TARGET_VIEW_WIDTH / 2;
+		LocalPanel.SCALE = TARGET_VIEW_WIDTH / viewWidth;
+		
+	}
+	
 	public void goneToOutfit() {
 		alert = 0;
 		tractor_count = 0;
@@ -72,17 +89,22 @@ public class LocalPanel extends BaseMapPanel {
 
 	/** getCourse */
 	byte getCourse() {
+		int centerX = this.getWidth() / 2;
+		int centerY = this.getHeight() / 2;
 		return (byte)Math.rint(
-			Math.atan2((double)(mx - 250), (double)(250 - my)) / Math.PI * 128);
+			Math.atan2((double)(mx - centerX), (double)(centerY - my)) / Math.PI * 128);
 	}
 
 	/** getTarget */
 	Object getTarget(int target_sype) {
-		return data.getTarget(data.me.x + ((mx - 250) * SCALE), data.me.y + ((my - 250) * SCALE), target_sype);
+		int centerX = this.getWidth() / 2;
+		int centerY = this.getHeight() / 2;
+		return data.getTarget(data.me.x + ((mx - centerX) * SCALE), data.me.y + ((my - centerY) * SCALE), target_sype);
 	}
 
 	/** update */
 	public void update(Graphics g) {
+		recalculateScale(); // added to support changing view size
 		Graphics og = offscreen.getGraphics();
 		og.setFont(getFont());
 
@@ -154,7 +176,7 @@ public class LocalPanel extends BaseMapPanel {
 			dy = planet.y / SCALE - 15;
 			
 			// do we have info on the planet?
-			Image planet_image = null;
+			/*Image planet_image = null;
 			if ((planet.info & me.team.bit) == 0) {
 				planet_image = bitmaps.noinfo;
 			}
@@ -166,9 +188,10 @@ public class LocalPanel extends BaseMapPanel {
 			}
 
 			source_y = 30 * (++planet.orbit % bitmaps.planet_frames);
+			*/
 
-			// draw the planet, transparent pixels are drawn in the planet's color.
-			og.drawImage(planet_image, dx, dy, dx + 30, dy + 30, 0, source_y, 30, source_y + 30, null);
+			//no longer cycling fancy planet graphics - Darrell 0.9.7
+			//og.drawImage(planet_image, dx, dy, dx + 30, dy + 30, 0, source_y, 30, source_y + 30, null);
 
 			if ((planet.info & me.team.bit) != 0) {
 				switch(Defaults.show_local) {
@@ -193,6 +216,9 @@ public class LocalPanel extends BaseMapPanel {
 			else {
 				og.setColor(Team.TEAMS[Team.NOBODY].getColor());
 			}
+			
+			// Now just drawing circle for the planet - Darrell 0.9.7
+			og.drawOval(dx, dy, 30, 30);
 
 			
 			// draw the name of the planet
@@ -207,7 +233,7 @@ public class LocalPanel extends BaseMapPanel {
 		} // end draw planets
 
 		// draw the players
-		for(int p = players.length; --p >= 0;) {
+		for(int p = players.length - 1; p >= 0; p--) {
 			Player player = players[p];
 
 			// see if this player is active
@@ -259,7 +285,14 @@ public class LocalPanel extends BaseMapPanel {
 			} 
 
 			if (player.status == Player.ALIVE) {
+				
+				// if my ship image is null, create it
+				if (player.me && bitmaps.myship == null) {
+					newShip();
+				}
 				Image ship = player.me ? bitmaps.myship : bitmaps.ships[player.team.no][player.ship.type];
+				//Image ship = bitmaps.ships[player.team.no][player.ship.type];
+
 				source_y = bitmaps.rosette[player.dir];
 				
 				og.drawImage(ship, 

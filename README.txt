@@ -1,4 +1,4 @@
- README for version 0.9.6 Beta by Darrell Root
+ README for version 0.9.7 Beta by Darrell Root
  
  I've taken Robert Temple's old JTrek code from 1998 and am attempting to update
  it to run on recent versions of Java.  Most of the code is cut-and-pasted from
@@ -86,6 +86,22 @@ and many others.
 
 People who worked the Paradise client:
 Larry Denys, Kurt Olsen, Brandon Gillespie
+
+
+Sound credits added by Darrell Root 2021:
+
+Our main sound collection is the “Dartoxian Space Weapons” sounds by jonccox from freesound.org under the Creative Commons Attribution License:
+175262__jonccox__gun-cannon.wav
+175265__jonccox__gun-thumper.wav (used for laser)
+175266__jonccox__gun-spark.wav
+175267__jonccox__gun-plasma.wav (used for plasma)
+175269__jonccox__gun-zap2.wav (used for torpedo)
+175270__jonccox__gun-zap.wav (used for detonate)
+
+The following other sounds were used from freesound.org under the Creative Commons Attribution License or the Creative Commons 0 License:
+Explosion from deleted user  399303__deleted-user-5405837__explosion-012.mp3
+Shield sound from ludvique   71852__ludvique__digital-whoosh-soft.wav
+
 
 -----------------------------------------------------------------------
 System requirements
