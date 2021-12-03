@@ -272,8 +272,11 @@ public class NetrekFrame extends Frame {
 		message.setBounds(halfWidth, rightYPosition, windowWidth/2, windowHeight / 28);
 		rightYPosition += windowHeight / 28;
 		
-		review.setBounds(halfWidth,rightYPosition, halfWidth, windowHeight / 4);
-		rightYPosition += windowHeight / 4;
+		//review.setBounds(halfWidth,rightYPosition, halfWidth, windowHeight / 6);
+		int reviewHeight = windowHeight - rightYPosition;
+		review.setBounds(halfWidth,rightYPosition, halfWidth, reviewHeight);
+		rightYPosition += reviewHeight;
+		//rightYPosition += windowHeight / 6;
 		
 		// The reviews below do not seem to work
 		// even with review above is commented out
