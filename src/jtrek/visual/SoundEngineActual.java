@@ -6,7 +6,7 @@ import javax.sound.sampled.*;
 
 public class SoundEngineActual implements SoundEngine {
 	final static int clipCount = 28;
-	final static boolean DEBUG_SOUND = false;
+	final static boolean DEBUG_SOUND = true;
     Clip[] audio_clips = new Clip[clipCount];
     
     private Clip getAudioClip(String filename) {
