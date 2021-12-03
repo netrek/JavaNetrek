@@ -66,13 +66,13 @@ public class LocalPanel extends BaseMapPanel {
 	 * That's 20% across the universe.
 	 */
 	private void recalculateScale() {
-		int viewWidth = this.getWidth();
+		int viewWidth = Math.min(this.getWidth(),this.getHeight());
 		if (viewWidth < 100) {
 			// giving up, view too small
 			return;
 		}
 		LocalPanel.VIEW = TARGET_VIEW_WIDTH / 2;
-		LocalPanel.SCALE = TARGET_VIEW_WIDTH / viewWidth;
+		LocalPanel.SCALE = (TARGET_VIEW_WIDTH - (2 * BORDER)) / viewWidth;
 		
 	}
 	
@@ -113,6 +113,42 @@ public class LocalPanel extends BaseMapPanel {
 		int dx, dy, sx, sy, source_y;
 		Player me = data.me;
 
+
+		// move bitmap at speed 2 if orbiting
+		if ((me.flags & Player.ORBIT) != 0) {
+			background_x -= Trigonometry.COS[me.dir] * 2f * 20f / SCALE;
+			background_y -= Trigonometry.SIN[me.dir] * 2f * 20f / SCALE;
+		}
+		
+		//		background_x -= Trigonometry.COS[me.dir] * (float)me.speed / 4f;
+		//background_x -= Trigonometry.COS[me.dir] * (float)me.speed * SCALE / 80f;
+		background_x -= Trigonometry.COS[me.dir] * (float)me.speed * 20f / SCALE ;
+
+		if(background_x < -bitmaps.background_width) {
+			background_x += bitmaps.background_width;
+		}
+		else if(background_x > 0.0f) {
+			background_x -= bitmaps.background_width;
+		}
+		
+		//		background_y -= Trigonometry.SIN[me.dir] * (float)me.speed / 4f;
+		//background_y -= Trigonometry.SIN[me.dir] * (float)me.speed * SCALE / 80f;
+		background_y -= Trigonometry.SIN[me.dir] * (float)me.speed * 20f / SCALE;
+
+		if(background_y < -bitmaps.background_height) {
+			background_y += bitmaps.background_height;
+		}
+		else if(background_y > 0.0f) {
+			background_y -= bitmaps.background_height;	
+		}
+
+		
+		for(int y = (int)background_y; y < view_size.height; y += bitmaps.background_height) {
+			for(int x = (int)background_x; x < view_size.width; x += bitmaps.background_width) {
+				og.drawImage(bitmaps.background, x, y, Color.black, null);					
+			}
+		}
+		
 		// Change border color to signify alert status
 		if (alert != (me.flags & ALERT_FILTER)) {
 			alert = (me.flags & ALERT_FILTER);
@@ -129,31 +165,11 @@ public class LocalPanel extends BaseMapPanel {
 				view.sound_player.playSound(SoundPlayer.WARNING_SOUND);
 				border_color = Color.red;
 				break;
-			}		
+			}	
 			paintBorder(g);
 		}
 
-		background_x -= Trigonometry.COS[me.dir] * (float)me.speed / 4f;
-		if(background_x < -bitmaps.background_width) {
-			background_x += bitmaps.background_width;
-		}
-		else if(background_x > 0.0f) {
-			background_x -= bitmaps.background_width;
-		}
-		
-		background_y -= Trigonometry.SIN[me.dir] * (float)me.speed / 4f;
-		if(background_y < -bitmaps.background_height) {
-			background_y += bitmaps.background_height;
-		}
-		else if(background_y > 0.0f) {
-			background_y -= bitmaps.background_height;	
-		}
-		
-		for(int y = (int)background_y; y < view_size.height; y += bitmaps.background_height) {
-			for(int x = (int)background_x; x < view_size.width; x += bitmaps.background_width) {
-				og.drawImage(bitmaps.background, x, y, Color.black, null);					
-			}
-		}
+
 
 		jtrek.util.Rectangle bounds = new jtrek.util.Rectangle(
 		  me.x - VIEW, me.y - VIEW, me.x - VIEW + 20000, me.y - VIEW + 20000);
@@ -162,7 +178,7 @@ public class LocalPanel extends BaseMapPanel {
 
 		// draw the edges of the galaxy
 		og.setColor(Color.red);
-		og.drawRect(0, 0, 2500, 2500);
+		og.drawRect(0, 0, 100000 / SCALE, 100000 / SCALE);
 
 		// draw out the planets
 		for(int p = data.planets.length; --p >= 0;) {
@@ -193,10 +209,11 @@ public class LocalPanel extends BaseMapPanel {
 			//no longer cycling fancy planet graphics - Darrell 0.9.7
 			//og.drawImage(planet_image, dx, dy, dx + 30, dy + 30, 0, source_y, 30, source_y + 30, null);
 
+			int planetSize = 1200 / SCALE; // used to be 30
 			if ((planet.info & me.team.bit) != 0) {
 				switch(Defaults.show_local) {
 				case 0 :
-					og.drawImage(bitmaps.teams, dx, dy, dx + 30, dy + 30, 0, planet.owner.no * 30, 30, planet.owner.no * 30 + 30, null);
+					og.drawImage(bitmaps.teams, dx, dy, dx + planetSize, dy + planetSize, 0, planet.owner.no * 30, 30, planet.owner.no * 30 + 30, null);
 					break;
 				case 1 :
 					int planet_type = (planet.armies > 4) ? 4 : 0;
@@ -206,7 +223,7 @@ public class LocalPanel extends BaseMapPanel {
 					if ((planet.flags & Planet.FUEL) != 0) {
 						planet_type += 1;
 					}
-					og.drawImage(bitmaps.resources, dx, dy, dx + 30, dy + 30, 0, planet_type * 30, 30, planet_type * 30 + 30, null);
+					og.drawImage(bitmaps.resources, dx, dy, dx + planetSize, dy + planetSize, 0, planet_type * 30, 30, planet_type * 30 + 30, null);
 					break;
 				default :
 					break;
@@ -218,7 +235,7 @@ public class LocalPanel extends BaseMapPanel {
 			}
 			
 			// Now just drawing circle for the planet - Darrell 0.9.7
-			og.drawOval(dx, dy, 30, 30);
+			og.drawOval(dx, dy, planetSize, planetSize);
 
 			
 			// draw the name of the planet
@@ -228,7 +245,8 @@ public class LocalPanel extends BaseMapPanel {
 				if(Defaults.name_mode == 1 && s.length() > 5) {
 					s = s.substring(0, 5);
 				}
-				og.drawString(s, dx + 15 - og.getFontMetrics().stringWidth(s) / 2, dy + 38);
+				//og.drawString(s, dx + 15 - og.getFontMetrics().stringWidth(s) / 2, dy + 38);
+				og.drawString(s, dx + planetSize / 2 - og.getFontMetrics().stringWidth(s) / 2, dy + planetSize + planetSize/2); // y coordinate + 1.5 * planetSize
 			}
 		} // end draw planets
 

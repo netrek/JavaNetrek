@@ -104,13 +104,13 @@ public class HelpPanel extends BasePanel {
 		int x = 8;
 
 		for(int i = 0, column = 0; column < 3 && i < help_message.length; ++column) {
-			int y = row_height + 6;
+			int y = row_height + 26;
 			for(int row = 0; row < help_message.length / 3 && i < help_message.length; ++row, ++i) {
 				g.drawString(updateKeyToKeymap(help_message[i]), x, y);
 				y += row_height;
 			}
 			x += column_width;
-		}	
+		}
 	}
 
 	String updateKeyToKeymap(String message) {

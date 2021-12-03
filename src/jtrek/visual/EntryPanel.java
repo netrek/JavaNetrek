@@ -68,7 +68,7 @@ public class EntryPanel extends BasePanel implements Copyright {
 	public void paint(Graphics g) {
 		g.setFont(big_font);
 		g.setColor(Color.white);
-		int y = g.getFontMetrics().getHeight() + 1;
+		int y = g.getFontMetrics().getHeight() + 30;
 		g.drawString(VERSION + "               by " + AUTHORS[0], 20, y);
 		g.setFont(variable_font);
 		y += g.getFontMetrics().getHeight() + 3;

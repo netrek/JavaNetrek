@@ -329,6 +329,7 @@ public class KeyInputHandler extends KeyAdapter {
 			break;
 		case 'h':
 			// h = Map help window
+			view.help.setBounds(100, 100, 700, 400);
 			view.help.setVisible(!view.help.isVisible());		
 			break;
 		case 'w':

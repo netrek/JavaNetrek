@@ -292,7 +292,6 @@ public class NetrekFrame extends Frame {
 		rightYPosition += windowHeight / 4;
 		
 		
-		
 	}
 	
 	void shutDown() {
