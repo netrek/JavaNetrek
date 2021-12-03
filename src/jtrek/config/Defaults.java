@@ -218,9 +218,15 @@ public class Defaults {
 		server = properties.getPropertyAsString("server");
 		port = properties.getPropertyAsInt("port");
 
-		dashboard_class = properties.getPropertyAsString("dashboardClass");
-		player_list_class = properties.getPropertyAsString("playerListClass");
-		sound_engine_class = properties.getPropertyAsString("soundEngineClass");
+		dashboard_class = "jtrek.visual.KRPDashboard";
+		//dashboard_class = properties.getPropertyAsString("dashboardClass");
+		
+		player_list_class = "jtrek.visual.SortedPlayerList";
+		//player_list_class = properties.getPropertyAsString("playerListClass");
+		
+		// This get property as string thing was in the original java source.  ugh? - Darrell
+		sound_engine_class = "jtrek.visual.SoundEngineActual";
+		//sound_engine_class = properties.getPropertyAsString("soundEngineClass");
 
 		//netstat = properties.getPropertyAsBoolean("netstats");
 		//abbr_kmesg = properties.getPropertyAsBoolean("shortKillMesg");
