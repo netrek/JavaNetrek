@@ -134,10 +134,10 @@ package jtrek;
  * Inc.
  */
 public interface Copyright {
-	String VERSION = "JTrek version 1.0.0 Beta";
+	String VERSION = "JTrek version 1.0.3";
 
 	String[] AUTHORS = { 
-		"Robert Temple","Darrell Root" 
+		"Robert Temple updated by Darrell Root" 
 	};
 
 	//String SUPPORT = "robertt@starwave.com";
