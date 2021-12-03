@@ -258,24 +258,8 @@ public class NetrekFrame extends Frame {
 		dashboard.setBounds(0, leftYPosition, halfWidth, 51);;
 		leftYPosition += 51;
 		
-		// reviews seem to overlap
-		review.setBounds(0,leftYPosition, halfWidth, windowHeight / 4);
+		player_list.setBounds(0, leftYPosition, halfWidth, windowHeight /4);
 		leftYPosition += windowHeight / 4;
-		
-		review_all.setBounds(0,leftYPosition, halfWidth, windowHeight / 8);
-		leftYPosition += windowHeight / 8;
-		
-		review_team.setBounds(0,leftYPosition, halfWidth, windowHeight / 8);
-		leftYPosition += windowHeight / 8;
-		
-		review_your.setBounds(0, leftYPosition, halfWidth, windowHeight / 8);
-		leftYPosition += windowHeight / 8;
-		
-		review_kill.setBounds(0, leftYPosition, halfWidth, windowHeight / 8);
-		leftYPosition += windowHeight / 8;
-		
-		review_phaser.setBounds(0, leftYPosition, halfWidth, windowHeight / 8);
-		leftYPosition += windowHeight / 8;
 
 		// right column
 		
@@ -288,10 +272,29 @@ public class NetrekFrame extends Frame {
 		message.setBounds(halfWidth, rightYPosition, windowWidth/2, windowHeight / 28);
 		rightYPosition += windowHeight / 28;
 		
-		player_list.setBounds(halfWidth, rightYPosition, windowWidth / 2, windowHeight /4);
-		rightYPosition += windowHeight / 4;
+		//review.setBounds(halfWidth,rightYPosition, halfWidth, windowHeight / 6);
+		int reviewHeight = windowHeight - rightYPosition;
+		review.setBounds(halfWidth,rightYPosition, halfWidth, reviewHeight);
+		rightYPosition += reviewHeight;
+		//rightYPosition += windowHeight / 6;
 		
+		// The reviews below do not seem to work
+		// even with review above is commented out
+		review_all.setBounds(halfWidth,rightYPosition, halfWidth, windowHeight / 8);
+		rightYPosition += windowHeight / 8;
 		
+		review_team.setBounds(halfWidth,rightYPosition, halfWidth, windowHeight / 8);
+		rightYPosition += windowHeight / 8;
+		
+		review_your.setBounds(halfWidth, rightYPosition, halfWidth, windowHeight / 8);
+		rightYPosition += windowHeight / 8;
+		
+		review_kill.setBounds(halfWidth, rightYPosition, halfWidth, windowHeight / 8);
+		rightYPosition += windowHeight / 8;
+		
+		review_phaser.setBounds(halfWidth, rightYPosition, halfWidth, windowHeight / 8);
+		rightYPosition += windowHeight / 8;
+
 		
 	}
 	

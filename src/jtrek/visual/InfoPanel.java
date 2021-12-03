@@ -74,7 +74,7 @@ public class InfoPanel extends XFocusPanel {
 		g.setFont(fixed_font);
 		g.setColor(Color.white);
 		int line_height = g.getFontMetrics().getHeight();
-		int y = 3;
+		int y = view_size.height / 10;
 		int bottom = (position + visible < extent) ? position + visible : extent;
 		for(int l = position; l < bottom; ++l) {
 			g.drawString(lines[l], 12, y += line_height);

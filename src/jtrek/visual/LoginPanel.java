@@ -158,7 +158,7 @@ public class LoginPanel extends OffscreenPanel implements Runnable {
 			og.drawLine(8, line_height + 1, 8 + og.getFontMetrics().stringWidth(s), line_height + 1);
 		}
 		else {
-			int y = 0;
+			int y = view_size.height / 10;
 			if(autologin_failure) {
 				String s = "Automatic login failed";
 				og.drawString(s, 8, (y += line_height));
